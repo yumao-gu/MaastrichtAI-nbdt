@@ -1,0 +1,7 @@
+pytorchcv
+torch==1.5.0
+torchvision
+nltk
+scikit-learn
+networkx
+pytest

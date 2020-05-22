@@ -1,0 +1,17 @@
+hard中使用子节点的output的平均值作为其代指的节点的伪output，
+model.get_node_logits.outputs.T[node.new_to_old_classes[new_label]].mean(dim=0)
+而结果却用softmax作为prob的推断
+model.get_all_node_outputs.'probs': F.softmax(node_logits, dim=1)
+导致出现不合理情况 改成：
+def get_node_logits(outputs, node):
+      output_list = []
+      for new_label in range(node.num_classes):
+          exp_sum = 0.0
+          num = 0
+          for output in outputs.T[node.new_to_old_classes[new_label]]:
+              exp_sum += torch.exp(output)
+              num += 1
+          output_list.append(torch.log(exp_sum/num))
+      return torch.stack(output_list).T
+
+注：stat,_ = analyzer.update_batch(outputs, targets)，在--analysis！=NONE时加_
