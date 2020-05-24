@@ -15,3 +15,8 @@ def get_node_logits(outputs, node):
       return torch.stack(output_list).T
 
 注：stat,_ = analyzer.update_batch(outputs, targets)，在--analysis！=NONE时加_
+改成max model get_node_logits里
+
+在mnist generate里加入最后一层归一化
+
+在hardloss部分加入节点数深度的权重

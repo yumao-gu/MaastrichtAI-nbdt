@@ -98,14 +98,8 @@ testloader = torch.utils.data.DataLoader(testset,batch_size=1)
 Colors.cyan(f'Testing with dataset {args.dataset} and {len(testset.classes)} classes')
 
 # Model
-if args.pretrained:
-    net_old = Net()
-    print('==> Loading pretrained model..')
-    checkpoint_old = torch.load('./mnist_cnn.pth', map_location=torch.device(device))
-    net_old.load_state_dict(checkpoint_old)
-
 # TODO(alvin): fix checkpoint structure so that this isn't neededd
-def load_state_dict(state_dict):
+def load_state_dict(net, state_dict):
     try:
         net.load_state_dict(state_dict)
     except RuntimeError as e:
@@ -113,18 +107,28 @@ def load_state_dict(state_dict):
             net.load_state_dict({
                 key.replace('module.', '', 1): value
                 for key, value in state_dict.items()})
+
+if args.pretrained:
+    net_old = Net()
+    print('==> Loading pretrained model..')
+    checkpoint_old = torch.load('./mnist_cnn_200.pth', map_location=torch.device(device))
+    if 'net' in checkpoint_old:
+        load_state_dict(net_old,checkpoint_old['net'])
+    else:
+        load_state_dict(net_old, checkpoint_old)
+
 net = Net()
 print('==> Loading NBDT model..')
 checkpoint_path = args.path_resume
 checkpoint= torch.load(checkpoint_path, map_location=torch.device(device))
 if 'net' in checkpoint:
-    load_state_dict(checkpoint['net'])
+    load_state_dict(net, checkpoint['net'])
     best_acc = checkpoint['acc']
     start_epoch = checkpoint['epoch']
     Colors.cyan(f'==> Checkpoint found for epoch {start_epoch} with accuracy '
           f'{best_acc} at {checkpoint_path}')
 else:
-    load_state_dict(checkpoint)
+    load_state_dict(net,checkpoint)
 
 #Analyzer
 class_analysis = getattr(analysis, args.analysis or 'Noop')
@@ -181,18 +185,18 @@ def test(epoch, analyzer):
 
           predicted_nbdt,decisions_nbdt = analyzer.update_batch(outputs, targets)
           correct_nbdt += predicted_nbdt.eq(targets).sum().item()
-          if predicted.eq(targets) and not predicted_nbdt.eq(targets):
+          if not predicted_nbdt.eq(targets) and not predicted_old.eq(targets):
               wrong_number += 1
-              print("something wrong happens")
+              print("something good happens")
               img = inputs[0]
               # img = inverse_transform(inputs[0],(0.1307,), (0.3081,))
               image = img.numpy()[0]
-              imagefile = folder+'/'+str(predicted.numpy()[0])\
+              imagefile = folder+'/'+str(predicted_old.numpy()[0])\
                 +'-'+str(predicted_nbdt.numpy()[0])+'-'+str(targets.numpy()[0])+".png"
               plt.imsave(imagefile,img[0])
-              message = '\n\n'+str(outputs)+' '+str(predicted.numpy()[0])\
+              message = '\n\n'+str(outputs)+' '+str(predicted_old.numpy()[0])\
                 +'-'+str(predicted_nbdt.numpy()[0])+'-'+str(targets.numpy()[0])+'\n'\
-                +str(decisions_nbdt)+'\n'
+                +str(decisions_nbdt)+'\n'+str(outputs_old)+'\n'
               logger.info(message)
 
           progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f | Acc_old: %.3f | Acc_nbdt: %.3f'

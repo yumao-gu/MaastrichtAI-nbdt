@@ -82,22 +82,45 @@ class EmbeddedDecisionRules(nn.Module):
         #     print(outputs.T[node.new_to_old_classes[label]].mean(dim=0))
 
         ##trial modify
-        output_list = []
+        # output_list = []
+        output_max_list=[]
         for new_label in range(node.num_classes):
-            exp_sum = 0.0
-            num = 0
-            for output in outputs.T[node.new_to_old_classes[new_label]]:
-                exp_sum += torch.exp(output)
-                num += 1
-            output_list.append(torch.log(exp_sum/num))
+            # exp_sum = 0.0
+            # num = 0
+            max_output = torch.max(outputs.T[node.new_to_old_classes[new_label]],0)[0]
+            # print("outputs.T[node.new_to_old_classes[new_label]]")
+            # print(outputs.T[node.new_to_old_classes[new_label]])
+            # max_output = outputs.T[node.new_to_old_classes[new_label]].max(dim=0)
+            # print(max_output)
+            # print("hahaah")
+            # for output in outputs.T[node.new_to_old_classes[new_label]]:
+            #     exp_sum += torch.exp(output)
+            #     num += 1
+                # print(output)
+                # if max_output < output:
+                #     max_output = output
+                # print("hahaah")
+                # print(max_output)
+            # output_list.append(torch.log(exp_sum/num))
+            output_max_list.append(max_output)
+        # print("output_list")
+        # print(output_list)
+        # print("output_max_list")
+        # print(output_max_list)
         # print("test output 1")
         # print(torch.stack(output_list).T)
         # print("test output 2")
         # print(torch.stack([outputs.T[node.new_to_old_classes[new_label]].mean(dim=0) for new_label in range(node.num_classes)]).T)
         # print("end get_node_logits")
-        return torch.stack(output_list).T
+        # print(torch.stack(output_list).T)
+        # print(F.log_softmax(output_list))
+        return torch.stack(output_max_list).T
         # return torch.stack([
         #     outputs.T[node.new_to_old_classes[new_label]].mean(dim=0)
+        #     for new_label in range(node.num_classes)
+        # ]).T
+        # return torch.stack([
+        #     outputs.T[node.new_to_old_classes[new_label]].max(dim=0)
         #     for new_label in range(node.num_classes)
         # ]).T
 

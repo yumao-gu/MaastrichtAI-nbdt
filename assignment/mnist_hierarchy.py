@@ -15,6 +15,7 @@ def main():
     test_hierarchy(args)
     generate_hierarchy_vis(args)
 
+#python3 mnist_hierarchy.py --induced-linkage average --induced-affinity l1
 
 if __name__ == '__main__':
     main()

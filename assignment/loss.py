@@ -143,12 +143,14 @@ class HardTreeSupLoss(TreeSupLoss):
         # print("begin Hard Loss forward")
         self.assert_output_not_nbdt(outputs)
 
-        loss = self.criterion(outputs, targets)
+        loss = self.criterion(outputs, targets) * 0
         # print("loss")
         # print(loss)
         num_losses = outputs.size(0) * len(self.nodes) / 2.
         # print("outputs")
-        # print(outputs)
+        # print(outputs.shape)
+        # print("targets")
+        # print(targets.shape)
         # for node in self.nodes:
         #     print("node.synset")
         #     print(node.synset)
@@ -182,14 +184,37 @@ class HardTreeSupLoss(TreeSupLoss):
             # print("key")
             # print(key)
             # print("outputs_sub")
+            # print(outputs_sub.requires_grad)
             # print(outputs_sub)
             # print("targets_sub")
-            # print(targets_sub)
+            # print(targets_sub.shape)
             if not outputs_sub.size(0):
                 continue
             fraction = outputs_sub.size(0) / float(num_losses) \
                 * self.tree_supervision_weight
-            loss += self.criterion(outputs_sub, targets_sub) * fraction
+            # loss += self.criterion(outputs_sub, targets_sub) * fraction
+            # print("oldloss")
+            # print(self.criterion(outputs_sub, targets_sub))
+            # print("type")
+            # print(type(self.criterion(outputs_sub, targets_sub)))
+            # newloss = 0.0
+            for i in range(outputs_sub.size(0)):
+                target_node = torch.Tensor([int(targets_subs[key][i])]).long().to(outputs_sub.device)
+
+                output_node = torch.chunk(outputs_sub,outputs_sub.size(0),0)[i]
+                # print("output_node")
+                # print(output_node.requires_grad)
+                # print(torch.chunk(outputs_sub,outputs_sub.size(0),0))
+                # print(output_node)
+
+                weight = float(outputs_sub.size(0)-i)
+                # print("output_node")
+                # print(output_node.requires_grad)
+                # print("target_node")
+                # print(target_node.shape)
+                loss += self.criterion(output_node, target_node) * weight/outputs_sub.size(0)
+            # print("newloss")
+            # print(newloss/outputs_sub.size(0))
         # print("end Hard Loss forward")
         return loss
 
@@ -201,8 +226,12 @@ class SoftTreeSupLoss(TreeSupLoss):
 
     def forward(self, outputs, targets):
         self.assert_output_not_nbdt(outputs)
+        # print("outputs")
+        # print(outputs)
 
         loss = self.criterion(outputs, targets)
         bayesian_outputs = self.rules(outputs)
+        # print("bayesian_outputs")
+        # print(bayesian_outputs)
         loss += self.criterion(bayesian_outputs, targets) * self.tree_supervision_weight
         return loss

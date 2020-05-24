@@ -195,23 +195,23 @@ criterion = class_criterion(**loss_kwargs)
 #
 # optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
 #
-# def adjust_learning_rate(epoch, lr):
-#     if args.lr_decay_every:
-#         steps = epoch // args.lr_decay_every
-#         return lr / (10 ** steps)
-#     if epoch <= 150 / 350. * args.epochs:  # 32k iterations
-#         return lr
-#     elif epoch <= 250 / 350. * args.epochs:  # 48k iterations
-#         return lr/10
-#     else:
-#         return lr/100
+def adjust_learning_rate(epoch, lr):
+    if args.lr_decay_every:
+        steps = epoch // args.lr_decay_every
+        return lr / (10 ** steps)
+    if epoch <= 150 / 350. * args.epochs:  # 32k iterations
+        return lr
+    elif epoch <= 250 / 350. * args.epochs:  # 48k iterations
+        return lr/10
+    else:
+        return lr/100
 #
 # Training
 def train(epoch, analyzer):
     analyzer.start_train(epoch)
-    # lr = adjust_learning_rate(epoch, args.lr)
-    # optimizer = optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=5e-4)
-    optimizer = optim.Adadelta(net.parameters(), lr=args.lr)
+    lr = adjust_learning_rate(epoch, args.lr)
+    # optimizer = optim.SGD(net.parameters(),  lr=args.lr, momentum=0.9, weight_decay=5e-4)
+    optimizer = optim.Adadelta(net.parameters(), lr=lr)
     print('\nEpoch: %d' % epoch)
     net.train()
     train_loss = 0
@@ -221,6 +221,16 @@ def train(epoch, analyzer):
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
         outputs = net(inputs)
+        # print("before loss main inputs")
+        # print(inputs)
+        # print("before loss main output")
+        # print(outputs)
+        # for output in outputs:
+        #     for value in output:
+        #         if value == 0.0:
+        #             print(output)
+                    # print(".\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n")
+
         loss = criterion(outputs, targets)
         loss.backward()
         optimizer.step()
@@ -229,11 +239,15 @@ def train(epoch, analyzer):
         _, predicted = outputs.max(1)
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
-
+        # outputs -=0.1
+        # print("before analysis main output")
+        # print(outputs)
         stat,_ = analyzer.update_batch(outputs, targets)
         # extra = f'| {stat}' if stat else ''
         extra=''
-
+        # if(float(train_loss/(batch_idx+1)) > 100):
+        #     print("train becomes nan")
+        #     os._exit()
         progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d) %s'
             % (train_loss/(batch_idx+1), 100.*correct/total, correct, total, extra))
 
@@ -278,6 +292,16 @@ def test(epoch, analyzer, checkpoint=True):
         print(f'Saving to {checkpoint_fname} ({acc})..')
         torch.save(state, f'./checkpoint/{checkpoint_fname}.pth')
         best_acc = acc
+    if epoch%100 == 0: # and checkpoint:
+        state = {
+            'net': net.state_dict(),
+            'acc': acc,
+            'epoch': epoch,
+        }
+        if not os.path.isdir('checkpoint'):
+            os.mkdir('checkpoint')
+        print(f'Saving to {checkpoint_fname} ({epoch})..')
+        torch.save(state, f'./checkpoint/{checkpoint_fname}-{epoch}.pth')
     analyzer.end_test(epoch)
 
 class_analysis = getattr(analysis, args.analysis or 'Noop')
