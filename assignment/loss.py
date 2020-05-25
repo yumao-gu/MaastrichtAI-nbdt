@@ -197,22 +197,30 @@ class HardTreeSupLoss(TreeSupLoss):
             # print(self.criterion(outputs_sub, targets_sub))
             # print("type")
             # print(type(self.criterion(outputs_sub, targets_sub)))
-            # newloss = 0.0
+            output_nodes = torch.chunk(outputs_sub,outputs_sub.size(0),0)
             for i in range(outputs_sub.size(0)):
-                target_node = torch.Tensor([int(targets_subs[key][i])]).long().to(outputs_sub.device)
-
-                output_node = torch.chunk(outputs_sub,outputs_sub.size(0),0)[i]
-                # print("output_node")
-                # print(output_node.requires_grad)
-                # print(torch.chunk(outputs_sub,outputs_sub.size(0),0))
+                # target_node = torch.Tensor([targets_subs[key][i]]).long().to(outputs_sub.device)
+                target_node = torch.Tensor(targets_subs[key][i:i+1]).long().to(outputs_sub.device)
+                output_node = output_nodes[i]
+                # print(target_node)
                 # print(output_node)
-
-                weight = float(outputs_sub.size(0)-i)
-                # print("output_node")
-                # print(output_node.requires_grad)
-                # print("target_node")
-                # print(target_node.shape)
-                loss += self.criterion(output_node, target_node) * weight/outputs_sub.size(0)
+                loss += self.criterion(output_node, target_node) *(1-i/float(outputs_sub.size(0)))
+            # newloss = 0.0
+            # for i in range(outputs_sub.size(0)):
+            #     target_node = torch.Tensor([int(targets_subs[key][i])]).long().to(outputs_sub.device)
+            #
+            #     output_node = torch.chunk(outputs_sub,outputs_sub.size(0),0)[i]
+            #     # print("output_node")
+            #     # print(output_node.requires_grad)
+            #     # print(torch.chunk(outputs_sub,outputs_sub.size(0),0))
+            #     # print(output_node)
+            #
+            #     weight = float(outputs_sub.size(0)-i)
+            #     # print("output_node")
+            #     # print(output_node.requires_grad)
+            #     # print("target_node")
+            #     # print(target_node.shape)
+            #     loss += self.criterion(output_node, target_node) * weight/outputs_sub.size(0)
             # print("newloss")
             # print(newloss/outputs_sub.size(0))
         # print("end Hard Loss forward")
