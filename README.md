@@ -1,5 +1,7 @@
 **Reference**
 
+All work is in /assignment folder.
+
 The original paper and github is: https://github.com/alvinwan/neural-backed-decision-trees.
 
 All my experiment results are in 
