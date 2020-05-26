@@ -1,6 +1,7 @@
 Reference
 
 the original paper and github is: https://github.com/alvinwan/neural-backed-decision-trees
+all my experiment results are in 
 
 Pretrained model
 We can run the script to get a ./mnist_cnn.pth for the fully connected weights
