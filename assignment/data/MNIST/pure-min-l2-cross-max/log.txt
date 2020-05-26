@@ -1,0 +1,48 @@
+[2020-05-27 00:24:41,295] - [logger name :decision] - [mnist_test_net.py file line:201] - INFO: 
+
+tensor([[-10.3001, -17.7657, -14.6337, -14.3872,  -9.3549,   4.6240,  -3.5390,
+          -6.1125,  -6.7145,   3.6202]]) 9-5-9
+[[{'node': <assignment.data.custom.Node object at 0x7ff9b133ba58>, 'name': 'root', 'prob': 1}, {'node': <assignment.data.custom.Node object at 0x7ff9b133b978>, 'name': '49165802', 'prob': 0.9999783039093018}, {'node': <assignment.data.custom.Node object at 0x7ff9b133b940>, 'name': '165802', 'prob': 0.7318107485771179}, {'node': <assignment.data.custom.Node object at 0x7ff9ad5459b0>, 'name': '5802', 'prob': 0.9997150301933289}, {'node': <assignment.data.custom.Node object at 0x7ff9b133b898>, 'name': '58', 'prob': 0.9999996423721313}, {'node': None, 'name': '5', 'prob': 0.9999880790710449}]]
+tensor([[-2.9701, -4.2954, -1.8094, -1.8354,  0.4179,  2.8622, -0.0944,  0.3608,
+          1.4058,  5.8760]])
+
+[2020-05-27 00:26:19,316] - [logger name :decision] - [mnist_test_net.py file line:201] - INFO: 
+
+tensor([[-10.3001, -17.7657, -14.6337, -14.3872,  -9.3549,   4.6240,  -3.5390,
+          -6.1125,  -6.7145,   3.6202]]) 9-5-9
+[[{'node': <assignment.data.custom.Node object at 0x7f2addb06b38>, 'name': 'root', 'prob': 1}, {'node': <assignment.data.custom.Node object at 0x7f2addb062e8>, 'name': '49165802', 'prob': 0.9999783039093018}, {'node': <assignment.data.custom.Node object at 0x7f2addb06ba8>, 'name': '165802', 'prob': 0.7318107485771179}, {'node': <assignment.data.custom.Node object at 0x7f2addafba20>, 'name': '5802', 'prob': 0.9997150301933289}, {'node': <assignment.data.custom.Node object at 0x7f2ae18f1828>, 'name': '58', 'prob': 0.9999996423721313}, {'node': None, 'name': '5', 'prob': 0.9999880790710449}]]
+tensor([[-2.9701, -4.2954, -1.8094, -1.8354,  0.4179,  2.8622, -0.0944,  0.3608,
+          1.4058,  5.8760]])
+
+[2020-05-27 00:27:54,796] - [logger name :decision] - [mnist_test_net.py file line:201] - INFO: 
+
+tensor([[-10.3001, -17.7657, -14.6337, -14.3872,  -9.3549,   4.6240,  -3.5390,
+          -6.1125,  -6.7145,   3.6202]]) 9-5-9
+[[{'node': <assignment.data.custom.Node object at 0x7f16dc2366d8>, 'name': 'root', 'prob': 1}, {'node': <assignment.data.custom.Node object at 0x7f16dc236978>, 'name': '49165802', 'prob': 0.9999783039093018}, {'node': <assignment.data.custom.Node object at 0x7f16dc236048>, 'name': '165802', 'prob': 0.7318107485771179}, {'node': <assignment.data.custom.Node object at 0x7f16d8440940>, 'name': '5802', 'prob': 0.9997150301933289}, {'node': <assignment.data.custom.Node object at 0x7f16dc236898>, 'name': '58', 'prob': 0.9999996423721313}, {'node': None, 'name': '5', 'prob': 0.9999880790710449}]]
+tensor([[-2.9701, -4.2954, -1.8094, -1.8354,  0.4179,  2.8622, -0.0944,  0.3608,
+          1.4058,  5.8760]])
+
+[2020-05-27 00:28:38,848] - [logger name :decision] - [mnist_test_net.py file line:201] - INFO: 
+
+tensor([[-10.3001, -17.7657, -14.6337, -14.3872,  -9.3549,   4.6240,  -3.5390,
+          -6.1125,  -6.7145,   3.6202]]) 9-5-9
+[[{'node': <assignment.data.custom.Node object at 0x7fe211546668>, 'name': 'root', 'prob': 1}, {'node': <assignment.data.custom.Node object at 0x7fe211546898>, 'name': '49165802', 'prob': 0.9999783039093018}, {'node': <assignment.data.custom.Node object at 0x7fe2115469b0>, 'name': '165802', 'prob': 0.7318107485771179}, {'node': <assignment.data.custom.Node object at 0x7fe20d7509b0>, 'name': '5802', 'prob': 0.9997150301933289}, {'node': <assignment.data.custom.Node object at 0x7fe2115467f0>, 'name': '58', 'prob': 0.9999996423721313}, {'node': None, 'name': '5', 'prob': 0.9999880790710449}]]
+tensor([[-2.9701, -4.2954, -1.8094, -1.8354,  0.4179,  2.8622, -0.0944,  0.3608,
+          1.4058,  5.8760]])
+
+[2020-05-27 00:30:14,322] - [logger name :decision] - [mnist_test_net.py file line:201] - INFO: 
+
+tensor([[-10.3001, -17.7657, -14.6337, -14.3872,  -9.3549,   4.6240,  -3.5390,
+          -6.1125,  -6.7145,   3.6202]]) 9-5-9
+[[{'node': <assignment.data.custom.Node object at 0x7f4e393589b0>, 'name': 'root', 'prob': 1}, {'node': <assignment.data.custom.Node object at 0x7f4e393588d0>, 'name': '49165802', 'prob': 0.9999783039093018}, {'node': <assignment.data.custom.Node object at 0x7f4e39358898>, 'name': '165802', 'prob': 0.7318107485771179}, {'node': <assignment.data.custom.Node object at 0x7f4e35560908>, 'name': '5802', 'prob': 0.9997150301933289}, {'node': <assignment.data.custom.Node object at 0x7f4e3936ef98>, 'name': '58', 'prob': 0.9999996423721313}, {'node': None, 'name': '5', 'prob': 0.9999880790710449}]]
+tensor([[-2.9701, -4.2954, -1.8094, -1.8354,  0.4179,  2.8622, -0.0944,  0.3608,
+          1.4058,  5.8760]])
+
+[2020-05-27 00:30:16,037] - [logger name :decision] - [mnist_test_net.py file line:201] - INFO: 
+
+tensor([[ -9.4569,  -5.4434,   3.2857, -12.4717,   2.7326, -14.2943,   3.9520,
+         -11.0715, -10.9424, -21.7809]]) 2-6-4
+[[{'node': <assignment.data.custom.Node object at 0x7f4e393589b0>, 'name': 'root', 'prob': 1}, {'node': <assignment.data.custom.Node object at 0x7f4e393588d0>, 'name': '49165802', 'prob': 0.9999996423721313}, {'node': <assignment.data.custom.Node object at 0x7f4e39358898>, 'name': '165802', 'prob': 0.7719612717628479}, {'node': <assignment.data.custom.Node object at 0x7f4e3936efd0>, 'name': '16', 'prob': 0.6606703400611877}, {'node': None, 'name': '6', 'prob': 0.9999169111251831}]]
+tensor([[-2.8003, -0.1197,  5.1403, -2.1548,  2.7982, -2.4380,  3.6685, -1.6096,
+         -0.7512, -4.0161]])
+

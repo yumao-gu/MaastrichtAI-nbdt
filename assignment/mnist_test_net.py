@@ -65,6 +65,7 @@ args = parser.parse_args()
 loss.set_default_values(args)
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'cpu'
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 
 ###logging and saving images
@@ -111,7 +112,7 @@ def load_state_dict(net, state_dict):
 if args.pretrained:
     net_old = Net()
     print('==> Loading pretrained model..')
-    checkpoint_old = torch.load('./mnist_cnn_200.pth', map_location=torch.device(device))
+    checkpoint_old = torch.load('./mnist_cnn.pth', map_location=torch.device(device))
     if 'net' in checkpoint_old:
         load_state_dict(net_old,checkpoint_old['net'])
     else:
@@ -185,7 +186,7 @@ def test(epoch, analyzer):
 
           predicted_nbdt,decisions_nbdt = analyzer.update_batch(outputs, targets)
           correct_nbdt += predicted_nbdt.eq(targets).sum().item()
-          if not predicted_nbdt.eq(targets) and not predicted_old.eq(targets):
+          if not predicted_nbdt.eq(targets) and not predicted.eq(targets):
               wrong_number += 1
               print("something good happens")
               img = inputs[0]

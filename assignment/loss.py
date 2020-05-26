@@ -143,14 +143,23 @@ class HardTreeSupLoss(TreeSupLoss):
         # print("begin Hard Loss forward")
         self.assert_output_not_nbdt(outputs)
 
-        loss = self.criterion(outputs, targets) * 0
+        loss = self.criterion(outputs, targets)
+        maxk = max((1,2))  # 取top1准确率，若取top1和top5准确率改为max((1,5))
+        m = nn.Softmax(dim=1)
+        value, pred = m(outputs).topk(maxk, 1, True, True)
+
+        print(m(outputs))
+        # print(outputs.T)
+        print(value)
+        print(value.var())
+        # print(torch.max(outputs.T,0)[0])
+        # print(torch.max(outputs.T,0)[1])
+
         # print("loss")
         # print(loss)
         num_losses = outputs.size(0) * len(self.nodes) / 2.
         # print("outputs")
-        # print(outputs.shape)
-        # print("targets")
-        # print(targets.shape)
+        # print(outputs)
         # for node in self.nodes:
         #     print("node.synset")
         #     print(node.synset)
@@ -167,6 +176,8 @@ class HardTreeSupLoss(TreeSupLoss):
             # print(outputs_sub)
             # print("targets_sub")
             # print(targets_sub)
+            # print("targets_ints")
+            # print(targets_ints)
             key = node.num_classes
             # print("key")
             # print(key)
@@ -184,46 +195,25 @@ class HardTreeSupLoss(TreeSupLoss):
             # print("key")
             # print(key)
             # print("outputs_sub")
-            # print(outputs_sub.requires_grad)
             # print(outputs_sub)
             # print("targets_sub")
-            # print(targets_sub.shape)
+            # print(targets_sub)
             if not outputs_sub.size(0):
                 continue
             fraction = outputs_sub.size(0) / float(num_losses) \
                 * self.tree_supervision_weight
-            # loss += self.criterion(outputs_sub, targets_sub) * fraction
-            # print("oldloss")
-            # print(self.criterion(outputs_sub, targets_sub))
-            # print("type")
-            # print(type(self.criterion(outputs_sub, targets_sub)))
-            output_nodes = torch.chunk(outputs_sub,outputs_sub.size(0),0)
-            for i in range(outputs_sub.size(0)):
-                # target_node = torch.Tensor([targets_subs[key][i]]).long().to(outputs_sub.device)
-                target_node = torch.Tensor(targets_subs[key][i:i+1]).long().to(outputs_sub.device)
-                output_node = output_nodes[i]
-                # print(target_node)
-                # print(output_node)
-                loss += self.criterion(output_node, target_node) *(1-i/float(outputs_sub.size(0)))
-            # newloss = 0.0
-            # for i in range(outputs_sub.size(0)):
-            #     target_node = torch.Tensor([int(targets_subs[key][i])]).long().to(outputs_sub.device)
-            #
-            #     output_node = torch.chunk(outputs_sub,outputs_sub.size(0),0)[i]
-            #     # print("output_node")
-            #     # print(output_node.requires_grad)
-            #     # print(torch.chunk(outputs_sub,outputs_sub.size(0),0))
-            #     # print(output_node)
-            #
-            #     weight = float(outputs_sub.size(0)-i)
-            #     # print("output_node")
-            #     # print(output_node.requires_grad)
-            #     # print("target_node")
-            #     # print(target_node.shape)
-            #     loss += self.criterion(output_node, target_node) * weight/outputs_sub.size(0)
-            # print("newloss")
-            # print(newloss/outputs_sub.size(0))
+            loss += self.criterion(outputs_sub, targets_sub) * fraction
         # print("end Hard Loss forward")
+            # output_nodes = torch.chunk(outputs_sub,outputs_sub.size(0),0)
+            # print(loss)
+
+            # for i in range(outputs_sub.size(0)):
+            #     target_node = torch.Tensor(targets_subs[key][i:i+1]).long().to(outputs_sub.device)
+            #     output_node = output_nodes[i]
+            #     loss_tmp = self.criterion(output_node, target_node) *(1-i/float(outputs_sub.size(0)))
+            #     loss = torch.max(loss_tmp,loss)
+                # print(loss_tmp)
+
         return loss
 
 
@@ -241,5 +231,7 @@ class SoftTreeSupLoss(TreeSupLoss):
         bayesian_outputs = self.rules(outputs)
         # print("bayesian_outputs")
         # print(bayesian_outputs)
-        loss += self.criterion(bayesian_outputs, targets) * self.tree_supervision_weight
+        loss_tmp= self.criterion(bayesian_outputs, targets) * self.tree_supervision_weight
+        # print(loss)
+        # print(loss_tmp)
         return loss

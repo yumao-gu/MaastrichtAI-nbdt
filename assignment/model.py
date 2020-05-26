@@ -120,7 +120,7 @@ class EmbeddedDecisionRules(nn.Module):
         #     for new_label in range(node.num_classes)
         # ]).T
         # return torch.stack([
-        #     outputs.T[node.new_to_old_classes[new_label]].max(dim=0)
+        #     outputs.T[node.new_to_old_classes[new_label]].sum(dim=0)
         #     for new_label in range(node.num_classes)
         # ]).T
 

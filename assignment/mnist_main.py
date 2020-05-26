@@ -143,10 +143,7 @@ print('==> Building model..')
 # else:
 #     net = model(**model_kwargs)
 #
-# net = net.to(device)
-# if device == 'cuda':
-#     net = torch.nn.DataParallel(net)
-#     cudnn.benchmark = True
+
 #
 checkpoint_fname = generate_fname(**vars(args))
 checkpoint_path = './checkpoint/{}.pth'.format(checkpoint_fname)
@@ -184,7 +181,11 @@ if args.resume:
             Colors.cyan(f'==> Checkpoint found at {resume_path}')
             # print(net.conv1.weight)
 
-
+net = net.to(device)
+if device == 'cuda':
+    net = torch.nn.DataParallel(net)
+    cudnn.benchmark = True
+    
 criterion = nn.CrossEntropyLoss()
 class_criterion = getattr(loss, args.loss)
 loss_kwargs = generate_kwargs(args, class_criterion,
@@ -218,6 +219,7 @@ def train(epoch, analyzer):
     correct = 0
     total = 0
     for batch_idx, (inputs, targets) in enumerate(trainloader):
+        print(batch_idx)
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
         outputs = net(inputs)

@@ -17,8 +17,8 @@ class Net(nn.Module):
         self.dropout2 = nn.Dropout2d(0.5)
         self.fc1 = nn.Linear(9216, 128)
         self.fc2 = nn.Linear(128, 10)
-        with torch.no_grad():
-            self.fc2.weight.div_(torch.norm(self.fc2.weight, dim=1, keepdim=True))
+        # with torch.no_grad():
+        #     self.fc2.weight.div_(torch.norm(self.fc2.weight, dim=1, keepdim=True))
 
     def forward(self, x):
         x = self.conv1(x)
