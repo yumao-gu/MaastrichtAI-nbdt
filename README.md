@@ -6,6 +6,8 @@ The original paper and github is: https://github.com/alvinwan/neural-backed-deci
 
 All my experiment results are in https://drive.google.com/drive/folders/1X9jjfJAHhc2uWY7IJzIw8jhgm-DF_iwH
 
+The report link is https://www.overleaf.com/project/5ebef1a00ac6fc000173388d
+
 **Pretrained model**
 
 We can run the script to get a ./mnist_cnn.pth for the fully connected weights.
